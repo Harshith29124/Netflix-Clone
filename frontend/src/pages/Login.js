@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
@@ -8,7 +9,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000'
 // Field-level validation
 function validateForm(fields) {
     const errors = {};
-    if (!fields.userId.trim()) {
+    if (!fields.userId || !fields.userId.trim()) {
         errors.userId = 'User ID is required.';
     }
     if (!fields.password) {
@@ -21,6 +22,7 @@ function validateForm(fields) {
 
 function Login() {
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const [fields, setFields] = useState({ userId: '', password: '' });
     const [errors, setErrors] = useState({});
@@ -63,27 +65,30 @@ function Login() {
 
         try {
             const response = await axios.post(
-                `${BACKEND_URL}/api/login`,
+                `${BACKEND_URL}/login`,
                 { UserId: fields.userId, password: fields.password },
                 { timeout: 10000 }
             );
 
             if (response.data.success) {
-                // Store minimal session info (no sensitive data)
-                sessionStorage.setItem('netflix_user', fields.userId);
+                // Use the auth context login
+                login(fields.userId);
                 navigate('/', { replace: true });
             }
         } catch (err) {
+            const data = err.response?.data;
             const msg =
-                err.response?.data?.message ||
-                (err.code === 'ECONNREFUSED' ? 'Cannot connect to server. Is the backend running?' : null) ||
+                data?.message ||
+                (err.code === 'ECONNABORTED' ? 'Request timed out. Server might be slow.' : null) ||
+                (err.code === 'ECONNREFUSED' ? 'Cannot connect to server.' : null) ||
                 err.message ||
-                'Login failed. Please try again.';
+                'Login failed.';
             setApiError(msg);
         } finally {
             setLoading(false);
         }
     };
+
 
     return (
         <div className="login-page">

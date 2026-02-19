@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const NAV_LINKS = [
@@ -11,6 +12,7 @@ const NAV_LINKS = [
 ];
 
 function Navbar() {
+    const { user, logout } = useAuth();
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
@@ -94,23 +96,39 @@ function Navbar() {
 
                     {/* Profile Dropdown */}
                     <div className="navbar__profile" onClick={toggleProfile} role="button" aria-expanded={profileOpen} aria-haspopup="true" aria-label="Profile menu" tabIndex={0} onKeyDown={e => e.key === 'Enter' && toggleProfile(e)}>
-                        <div className="navbar__avatar" aria-hidden="true">H</div>
+                        <div className="navbar__avatar" aria-hidden="true">{user ? user.charAt(0).toUpperCase() : 'N'}</div>
                         <svg className={`navbar__caret ${profileOpen ? 'navbar__caret--open' : ''}`} viewBox="0 0 24 24" width="11" height="11" fill="currentColor">
                             <path d="M7 10l5 5 5-5z" />
                         </svg>
                         {profileOpen && (
                             <div className="navbar__dropdown" role="menu">
-                                <Link to="/register" className="navbar__dropdown-item" role="menuitem">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-                                    Sign Up
-                                </Link>
-                                <Link to="/login" className="navbar__dropdown-item" role="menuitem">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" y1="12" x2="3" y2="12" /></svg>
-                                    Sign In
-                                </Link>
+                                {user ? (
+                                    <>
+                                        <div className="navbar__dropdown-header">
+                                            <span>{user}</span>
+                                        </div>
+                                        <div className="navbar__dropdown-divider" />
+                                        <button className="navbar__dropdown-item" role="menuitem" onClick={() => { logout(); setProfileOpen(false); }}>
+                                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+                                            Sign Out of Netflix
+                                        </button>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link to="/register" className="navbar__dropdown-item" role="menuitem">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                                            Sign Up
+                                        </Link>
+                                        <Link to="/login" className="navbar__dropdown-item" role="menuitem">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" /><polyline points="10 17 15 12 10 7" /><line x1="15" y1="12" x2="3" y2="12" /></svg>
+                                            Sign In
+                                        </Link>
+                                    </>
+                                )}
                             </div>
                         )}
                     </div>
+
 
                     {/* Hamburger — Mobile Only */}
                     <button
@@ -155,14 +173,29 @@ function Navbar() {
                         </li>
                     ))}
                     <li className="navbar__mobile-divider" aria-hidden="true" />
-                    <li>
-                        <Link to="/login" className="navbar__mobile-link" onClick={() => setMenuOpen(false)}>Sign In</Link>
-                    </li>
-                    <li>
-                        <Link to="/register" className="navbar__mobile-link navbar__mobile-link--signup" onClick={() => setMenuOpen(false)}>
-                            Sign Up
-                        </Link>
-                    </li>
+                    {user ? (
+                        <li>
+                            <button
+                                className="navbar__mobile-link"
+                                onClick={() => { logout(); setMenuOpen(false); }}
+                                style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', cursor: 'pointer', padding: '0.8rem 0' }}
+                            >
+                                Sign Out of Netflix
+                            </button>
+                        </li>
+                    ) : (
+                        <>
+                            <li>
+                                <Link to="/login" className="navbar__mobile-link" onClick={() => setMenuOpen(false)}>Sign In</Link>
+                            </li>
+                            <li>
+                                <Link to="/register" className="navbar__mobile-link navbar__mobile-link--signup" onClick={() => setMenuOpen(false)}>
+                                    Sign Up
+                                </Link>
+                            </li>
+                        </>
+                    )}
+
                 </ul>
             </div>
 
