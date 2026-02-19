@@ -21,14 +21,20 @@ export default async function handler(req, res) {
     let connection;
     try {
         const mysql = await import('mysql2/promise');
-        connection = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: process.env.DB_PORT,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            ssl: { rejectUnauthorized: false }
-        });
+
+        // Check if DB_HOST is actually a full URI
+        const config = process.env.DB_HOST?.startsWith('mysql://')
+            ? { uri: process.env.DB_HOST, ssl: { rejectUnauthorized: false } }
+            : {
+                host: process.env.DB_HOST,
+                port: process.env.DB_PORT,
+                user: process.env.DB_USER,
+                password: process.env.DB_PASSWORD,
+                database: process.env.DB_NAME,
+                ssl: { rejectUnauthorized: false }
+            };
+
+        connection = await mysql.createConnection(config);
 
         const [users] = await connection.execute(
             'SELECT * FROM User WHERE UserId = ?',
@@ -51,8 +57,8 @@ export default async function handler(req, res) {
         });
 
     } catch (error) {
-        console.error('Login error:', error);
-        return res.status(500).json({ message: 'Internal server error' });
+        console.error('Login error:', error.message);
+        return res.status(500).json({ message: 'Database connection failed. Check your environment variables.' });
     } finally {
         if (connection) await connection.end();
     }
