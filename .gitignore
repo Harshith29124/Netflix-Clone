@@ -9,8 +9,8 @@ backend/dist/
 # ── Environment Files (contain secrets) ─────────────────────
 # Keep .env files in git as templates (values are empty)
 # Uncomment the lines below if you add real credentials
-# frontend/.env
-# backend/.env
+frontend/.env
+backend/.env
 
 # ── Logs ─────────────────────────────────────────────────────
 *.log
