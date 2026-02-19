@@ -65,7 +65,7 @@ function Login() {
 
         try {
             const response = await axios.post(
-                `${BACKEND_URL}/login`,
+                `${BACKEND_URL}/api/login`,
                 { UserId: fields.userId, password: fields.password },
                 { timeout: 10000 }
             );
