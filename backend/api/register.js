@@ -1,37 +1,21 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
+import mysql from 'mysql2/promise';
 
 export default async function handler(req, res) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
     if (req.method === 'OPTIONS') return res.status(200).end();
-    if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method not allowed' });
-    }
+    if (req.method !== 'POST') return res.status(405).json({ message: 'Method not allowed' });
 
     const { UserId, name, password, email, phone } = req.body;
-
     if (!UserId || !name || !password || !email || !phone) {
         return res.status(400).json({ message: 'All fields required' });
     }
 
     let connection;
     try {
-        const mysql = await import('mysql2/promise');
-
-        let dbHost = process.env.DB_HOST;
-        let config;
-
-        if (dbHost?.startsWith('mysql://')) {
-            // Strip Aiven-specific query params that mysql2 doesn't support (like ssl-mode)
-            const cleanUri = dbHost.split('?')[0];
-            config = {
-                uri: cleanUri,
-                ssl: { rejectUnauthorized: false }
-            };
-        } else {
-            config = {
+        const dbHost = process.env.DB_HOST;
+        const config = dbHost?.startsWith('mysql://')
+            ? { uri: dbHost.split('?')[0], ssl: { rejectUnauthorized: false } }
+            : {
                 host: process.env.DB_HOST,
                 port: process.env.DB_PORT,
                 user: process.env.DB_USER,
@@ -39,10 +23,10 @@ export default async function handler(req, res) {
                 database: process.env.DB_NAME,
                 ssl: { rejectUnauthorized: false }
             };
-        }
 
         connection = await mysql.createConnection(config);
 
+        // Ensure User table exists
         await connection.execute(`
       CREATE TABLE IF NOT EXISTS User (
         UserId VARCHAR(50) PRIMARY KEY,
@@ -54,15 +38,14 @@ export default async function handler(req, res) {
       )
     `);
 
+        // Check existing
         const [existing] = await connection.execute(
             'SELECT UserId FROM User WHERE UserId = ? OR email = ?',
             [UserId, email]
         );
 
         if (existing.length > 0) {
-            return res.status(409).json({
-                message: 'User ID or email already exists'
-            });
+            return res.status(409).json({ message: 'User ID or email already exists' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -72,14 +55,11 @@ export default async function handler(req, res) {
             [UserId, name, hashedPassword, email, phone]
         );
 
-        return res.status(201).json({
-            success: true,
-            message: 'Registration successful'
-        });
+        return res.status(201).json({ success: true, message: 'Registration successful' });
 
     } catch (error) {
-        console.error('Register error:', error.message);
-        return res.status(500).json({ message: 'Internal server error. Database connection failed.' });
+        console.error('API Error:', error.message);
+        return res.status(500).json({ success: false, message: 'Server error. Please verify Database credentials in Vercel.' });
     } finally {
         if (connection) await connection.end();
     }
