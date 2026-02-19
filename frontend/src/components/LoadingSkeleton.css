@@ -1,0 +1,146 @@
+/* ============================================================
+   LoadingSkeleton — Shimmer effect
+   ============================================================ */
+
+@keyframes shimmer {
+    0% {
+        background-position: -468px 0;
+    }
+
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+/* Shared shimmer gradient */
+.skeleton__line,
+.skeleton__img,
+.skeleton__btn,
+.skeleton--card {
+    background: linear-gradient(90deg,
+            #2a2a2a 25%,
+            #3a3a3a 37%,
+            #2a2a2a 63%);
+    background-size: 800px 100%;
+    animation: shimmer 1.4s infinite linear;
+}
+
+/* ── Card Skeleton ── */
+.skeleton--card {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    width: 100%;
+    animation: none;
+    /* parent handles shimmer */
+    background: #1f1f1f;
+}
+
+.skeleton__img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.skeleton__card-footer {
+    padding: var(--space-xs) var(--space-sm) var(--space-sm);
+}
+
+.skeleton__line {
+    border-radius: 4px;
+    height: 12px;
+    margin-bottom: 6px;
+}
+
+.skeleton__line--card-title {
+    width: 75%;
+    height: 10px;
+}
+
+/* ── Banner Skeleton ── */
+.skeleton--banner {
+    width: 100%;
+    height: 50vh;
+    min-height: 320px;
+    background: #0f0f0f;
+    display: flex;
+    align-items: flex-end;
+}
+
+.skeleton__banner-content {
+    padding: var(--space-lg) var(--space-md);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.skeleton__line--title {
+    width: 50%;
+    height: 36px;
+}
+
+.skeleton__line--subtitle {
+    width: 30%;
+    height: 18px;
+}
+
+.skeleton__line--desc {
+    width: 80%;
+    height: 12px;
+}
+
+.skeleton__line--short {
+    width: 55%;
+}
+
+.skeleton__banner-buttons {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.skeleton__btn {
+    width: 130px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+}
+
+/* ── Text Skeleton ── */
+.skeleton--text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-md) 0;
+}
+
+/* ============================================================
+   Tablet+
+   ============================================================ */
+@media (min-width: 481px) {
+    .skeleton--banner {
+        height: 60vh;
+    }
+
+    .skeleton__banner-content {
+        align-items: flex-start;
+        padding: var(--space-xl);
+    }
+
+    .skeleton__line--title {
+        height: 48px;
+        width: 40%;
+    }
+}
+
+@media (min-width: 769px) {
+    .skeleton--banner {
+        height: 75vh;
+    }
+
+    .skeleton__banner-content {
+        max-width: 50%;
+        padding: 0 4% var(--space-2xl);
+    }
+}

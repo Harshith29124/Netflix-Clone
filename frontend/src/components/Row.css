@@ -1,0 +1,221 @@
+/* ============================================================
+   Row — Mobile First
+   ============================================================ */
+
+.row {
+    padding: var(--space-lg) 0;
+    position: relative;
+}
+
+.row--large .row__item {
+    /* Large cards for trending row */
+    min-width: 160px;
+}
+
+/* ── Title ── */
+.row__title {
+    font-size: var(--font-base);
+    font-weight: 700;
+    color: var(--netflix-white);
+    margin-bottom: var(--space-md);
+    padding: 0 var(--space-md);
+    letter-spacing: 0.02em;
+}
+
+/* ── Wrapper — contains arrows + container ── */
+.row__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* ── Scroll Arrows (hidden on mobile, shown on desktop) ── */
+.row__arrow {
+    display: none;
+    /* hidden on mobile */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: var(--z-card);
+    background: rgba(20, 20, 20, 0.9);
+    color: var(--netflix-white);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.row__arrow:hover {
+    background: rgba(40, 40, 40, 0.98);
+    transform: translateY(-50%) scale(1.08);
+}
+
+.row__arrow:active {
+    transform: translateY(-50%) scale(0.96);
+}
+
+.row__arrow--left {
+    left: 4px;
+}
+
+.row__arrow--right {
+    right: 4px;
+}
+
+/* ── Container — horizontally scrollable ── */
+.row__container {
+    display: flex;
+    gap: var(--space-sm);
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    /* smooth momentum scrolling on iOS */
+    padding: var(--space-sm) var(--space-md);
+    /* Hide scrollbar on mobile while keeping scroll functionality */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.row__container::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── Individual Items ── */
+.row__item {
+    flex-shrink: 0;
+    /* Mobile: 2 visible cards */
+    width: calc((100vw - 3rem) / 2);
+    min-width: 130px;
+    max-width: 180px;
+}
+
+/* ── Skeleton items ── */
+.row__skeleton-item {
+    flex-shrink: 0;
+    width: calc((100vw - 3rem) / 2);
+    min-width: 130px;
+    max-width: 180px;
+}
+
+/* ── Error State ── */
+.row--error {
+    padding: var(--space-lg) var(--space-md);
+}
+
+.row__error-msg {
+    color: var(--netflix-light-gray);
+    font-size: var(--font-sm);
+}
+
+/* ============================================================
+   Tablet (481px+) — 3 cards
+   ============================================================ */
+@media (min-width: 481px) {
+    .row__title {
+        font-size: var(--font-lg);
+        padding: 0 var(--space-xl);
+    }
+
+    .row__item,
+    .row__skeleton-item {
+        width: calc((100vw - 4rem) / 3);
+        min-width: 150px;
+        max-width: 220px;
+    }
+
+    .row__container {
+        padding: var(--space-sm) var(--space-xl);
+        gap: var(--space-md);
+    }
+}
+
+/* ============================================================
+   Laptop (769px+) — 4 cards, show arrows
+   ============================================================ */
+@media (min-width: 769px) {
+    .row {
+        padding: var(--space-xl) 0;
+    }
+
+    .row__title {
+        font-size: var(--font-xl);
+        padding: 0 4%;
+    }
+
+    .row__arrow {
+        display: flex;
+    }
+
+    .row__item,
+    .row__skeleton-item {
+        width: calc((100% - 6rem) / 4);
+        min-width: 160px;
+        max-width: 260px;
+    }
+
+    .row__container {
+        padding: var(--space-md) 4%;
+        gap: var(--space-sm);
+        /* Remove auto-scroll on desktop, arrows handle it */
+        overflow-x: hidden;
+    }
+
+    .row--large .row__item,
+    .row--large .row__skeleton-item {
+        width: calc((100% - 6rem) / 3);
+        max-width: 320px;
+    }
+}
+
+/* ============================================================
+   Desktop (1025px+) — 5 cards
+   ============================================================ */
+@media (min-width: 1025px) {
+
+    .row__item,
+    .row__skeleton-item {
+        width: calc((100% - 6rem) / 5);
+        max-width: 280px;
+    }
+
+    .row--large .row__item,
+    .row--large .row__skeleton-item {
+        width: calc((100% - 6rem) / 4);
+    }
+
+    .row__container {
+        gap: var(--space-sm);
+    }
+}
+
+/* ============================================================
+   Large Screens (1441px+) — 6 cards
+   ============================================================ */
+@media (min-width: 1441px) {
+
+    .row__item,
+    .row__skeleton-item {
+        width: calc((100% - 8rem) / 6);
+    }
+
+    .row__title {
+        padding: 0 6%;
+    }
+
+    .row__container {
+        padding: var(--space-md) 6%;
+    }
+
+    .row__arrow--left {
+        left: 16px;
+    }
+
+    .row__arrow--right {
+        right: 16px;
+    }
+}

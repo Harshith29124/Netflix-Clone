@@ -1,0 +1,159 @@
+/* ============================================================
+   Home Page — Mobile First
+   ============================================================ */
+
+.home {
+    background-color: var(--netflix-dark);
+    min-height: 100vh;
+}
+
+/* ── Skip Link (accessibility) ── */
+.home__skip-link {
+    position: absolute;
+    top: -100px;
+    left: var(--space-md);
+    background: var(--netflix-white);
+    color: var(--netflix-black);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    z-index: calc(var(--z-modal) + 10);
+    transition: top var(--transition-fast);
+}
+
+.home__skip-link:focus {
+    top: var(--space-md);
+}
+
+/* ── Rows Section ── */
+.home__rows {
+    padding-bottom: var(--space-2xl);
+    /* offset so rows don't go under banner */
+    margin-top: 0;
+}
+
+/* ── Footer ── */
+.home__footer {
+    background: transparent;
+    padding: var(--space-2xl) var(--space-md) var(--space-xl);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-top: var(--space-2xl);
+}
+
+.home__footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.home__footer-text {
+    font-size: var(--font-sm);
+    color: var(--netflix-gray);
+}
+
+.home__footer-link {
+    color: var(--netflix-gray);
+    font-size: var(--font-sm);
+    transition: color var(--transition-fast);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+}
+
+.home__footer-link:hover {
+    color: var(--netflix-light-gray);
+    text-decoration-color: var(--netflix-light-gray);
+}
+
+/* ── Footer Nav Grid ── */
+.home__footer-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm) var(--space-md);
+}
+
+.home__footer-nav .home__footer-link {
+    text-decoration: none;
+    padding: 2px 0;
+}
+
+.home__footer-nav .home__footer-link:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--netflix-gray);
+}
+
+/* ── Language Button ── */
+.home__language-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background: transparent;
+    border: 1px solid var(--netflix-gray);
+    color: var(--netflix-gray);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-sm);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), color var(--transition-fast);
+    min-height: 44px;
+}
+
+.home__language-btn:hover {
+    border-color: var(--netflix-light-gray);
+    color: var(--netflix-light-gray);
+}
+
+.home__footer-copyright,
+.home__footer-loc {
+    font-size: var(--font-xs);
+    color: var(--netflix-gray);
+}
+
+/* ============================================================
+   Tablet (481px+)
+   ============================================================ */
+@media (min-width: 481px) {
+    .home__footer {
+        padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+    }
+
+    .home__footer-nav {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ============================================================
+   Laptop (769px+)
+   ============================================================ */
+@media (min-width: 769px) {
+    .home__footer {
+        padding: var(--space-2xl) 4% var(--space-xl);
+    }
+
+    .home__footer-nav {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* ============================================================
+   Desktop (1025px+)
+   ============================================================ */
+@media (min-width: 1025px) {
+    .home__footer {
+        padding: var(--space-2xl) 4% var(--space-xl);
+    }
+
+    .home__footer-nav {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* ============================================================
+   Large Screens (1441px+)
+   ============================================================ */
+@media (min-width: 1441px) {
+    .home__footer {
+        padding: var(--space-2xl) 6% var(--space-xl);
+    }
+}

@@ -1,0 +1,126 @@
+/* ============================================================
+   Register Page — extends Login.css shared styles
+   Mobile First
+   ============================================================ */
+
+/* Import shared login styles */
+@import './Login.css';
+
+/* ── Register Page Background ── */
+.register-page {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-page__bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: url('https://assets.nflxext.com/ffe/siteui/vlv3/dc1cf82d-5ck3a-4c5a-a91e-571e93db6ef6/webp/IN-en-20240205-trifectalink-perspective_alpha_website_large.jpg') center/cover no-repeat;
+}
+
+.register-page__bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.70);
+}
+
+/* ── Wider box for Register ── */
+.register-form-box {
+    /* On mobile: same as login */
+}
+
+/* ── Success Banner ── */
+.register-form-box__success {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    background: rgba(70, 211, 105, 0.12);
+    border: 1px solid rgba(70, 211, 105, 0.4);
+    color: #46d369;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    animation: successPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes successPop {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ── Valid Field State ── */
+.form-field--valid .form-field__input {
+    border-color: #46d369;
+}
+
+.form-field__valid {
+    font-size: var(--font-xs);
+    color: #46d369;
+    font-weight: 500;
+}
+
+/* ── Hint Text ── */
+.form-field__hint {
+    font-size: var(--font-xs);
+    color: var(--netflix-gray);
+    line-height: 1.4;
+}
+
+/* ── Password Strength Meter ── */
+.password-strength {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: 4px;
+}
+
+.password-strength__bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.password-strength__fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width var(--transition-base), background-color var(--transition-base);
+}
+
+.password-strength__label {
+    font-size: var(--font-xs);
+    font-weight: 700;
+    min-width: 42px;
+    text-align: right;
+}
+
+/* ============================================================
+   Tablet (481px+)
+   ============================================================ */
+@media (min-width: 481px) {
+    .register-form-box {
+        max-width: 460px;
+    }
+}
+
+/* ============================================================
+   Laptop (769px+)
+   ============================================================ */
+@media (min-width: 769px) {
+    .register-form-box {
+        max-width: 480px;
+    }
+}

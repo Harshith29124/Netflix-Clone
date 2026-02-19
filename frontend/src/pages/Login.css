@@ -1,0 +1,310 @@
+/* ============================================================
+   Login Page — Mobile First
+   Shared styles for auth pages (Login & Register)
+   ============================================================ */
+
+/* ── Page Layout ── */
+.login-page {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Background ── */
+.login-page__bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: url('https://assets.nflxext.com/ffe/siteui/vlv3/dc1cf82d-5ck3a-4c5a-a91e-571e93db6ef6/webp/IN-en-20240205-trifectalink-perspective_alpha_website_large.jpg') center/cover no-repeat;
+}
+
+.login-page__bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.60);
+}
+
+/* ── Header ── */
+.login-page__header {
+    position: relative;
+    z-index: 2;
+    padding: var(--space-lg) var(--space-md);
+}
+
+.login-page__logo {
+    display: inline-flex;
+}
+
+.login-page__logo-svg {
+    width: 100px;
+    height: auto;
+}
+
+/* ── Main ── */
+.login-page__main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    padding-bottom: var(--space-2xl);
+}
+
+/* ── Form Box ── */
+.login-form-box {
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl) var(--space-xl);
+    width: 100%;
+    max-width: 100%;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.login-form-box__title {
+    font-size: var(--font-2xl);
+    font-weight: 700;
+    color: var(--netflix-white);
+    margin-bottom: var(--space-xl);
+}
+
+/* ── API Error Banner ── */
+.login-form-box__api-error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    background: rgba(229, 9, 20, 0.12);
+    border: 1px solid rgba(229, 9, 20, 0.5);
+    color: #ff8080;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-sm);
+    margin-bottom: var(--space-lg);
+    line-height: 1.5;
+}
+
+/* ── Form ── */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+/* ── Form Field ── */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+}
+
+.form-field__label {
+    font-size: var(--font-sm);
+    color: var(--netflix-light-gray);
+    font-weight: 500;
+}
+
+.form-field__input {
+    background: #333;
+    border: 1px solid #555;
+    color: var(--netflix-white);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-base);
+    transition: border-color var(--transition-fast), background-color var(--transition-fast);
+    min-height: 48px;
+    width: 100%;
+}
+
+.form-field__input:focus {
+    border-color: var(--netflix-white);
+    background: #3d3d3d;
+}
+
+.form-field__input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-field__input::placeholder {
+    color: #777;
+}
+
+/* Error state input */
+.form-field--error .form-field__input {
+    border-color: #e87c03;
+    background: #3d3020;
+}
+
+.form-field__error {
+    font-size: var(--font-xs);
+    color: #e87c03;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+/* ── Password Wrapper ── */
+.form-field__input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-field__input--padded-right {
+    padding-right: 3rem;
+}
+
+.form-field__eye-btn {
+    position: absolute;
+    right: var(--space-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    color: var(--netflix-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast);
+}
+
+.form-field__eye-btn:hover {
+    color: var(--netflix-white);
+}
+
+/* ── Submit Button ── */
+.auth-submit-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    width: 100%;
+    padding: 0.85rem;
+    background: var(--netflix-red);
+    color: var(--netflix-white);
+    font-size: var(--font-base);
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    min-height: 52px;
+    margin-top: var(--space-sm);
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    letter-spacing: 0.02em;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+    background: var(--netflix-red-hover);
+}
+
+.auth-submit-btn:active:not(:disabled) {
+    transform: scale(0.99);
+}
+
+.auth-submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* ── Spinner ── */
+.spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--netflix-white);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ── Form Box Footer ── */
+.login-form-box__footer {
+    margin-top: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.login-form-box__help-link {
+    color: var(--netflix-light-gray);
+    font-size: var(--font-sm);
+    transition: color var(--transition-fast);
+}
+
+.login-form-box__help-link:hover {
+    color: var(--netflix-white);
+    text-decoration: underline;
+}
+
+.login-form-box__signup-prompt {
+    font-size: var(--font-sm);
+    color: var(--netflix-gray);
+}
+
+.login-form-box__signup-link {
+    color: var(--netflix-white);
+    font-weight: 600;
+    transition: text-decoration var(--transition-fast);
+}
+
+.login-form-box__signup-link:hover {
+    text-decoration: underline;
+}
+
+.login-form-box__recaptcha {
+    font-size: var(--font-xs);
+    color: var(--netflix-gray);
+    line-height: 1.5;
+}
+
+.login-form-box__learn-more {
+    color: #0071eb;
+    transition: color var(--transition-fast);
+}
+
+.login-form-box__learn-more:hover {
+    text-decoration: underline;
+    color: #0070bc;
+}
+
+/* ============================================================
+   Tablet (481px+)
+   ============================================================ */
+@media (min-width: 481px) {
+    .login-page__header {
+        padding: var(--space-xl) var(--space-2xl);
+    }
+
+    .login-page__logo-svg {
+        width: 130px;
+    }
+
+    .login-form-box {
+        max-width: 420px;
+        padding: var(--space-2xl);
+    }
+}
+
+/* ============================================================
+   Laptop (769px+)
+   ============================================================ */
+@media (min-width: 769px) {
+    .login-form-box {
+        max-width: 450px;
+        padding: 3rem;
+    }
+
+    .login-form-box__title {
+        font-size: var(--font-3xl);
+    }
+}

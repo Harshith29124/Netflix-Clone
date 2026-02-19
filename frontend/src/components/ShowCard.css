@@ -1,0 +1,254 @@
+/* ============================================================
+   ShowCard — Mobile First
+   ============================================================ */
+
+.show-card {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: visible;
+    /* allow hover scale to overflow */
+    cursor: pointer;
+    transition: transform var(--transition-base), z-index 0s var(--transition-base);
+    z-index: var(--z-base);
+    background: var(--card-bg);
+}
+
+/* ── Image Wrapper ── */
+.show-card__img-wrapper {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    /* 2:3 aspect ratio (poster shape) */
+    aspect-ratio: 2 / 3;
+    background: #1a1a1a;
+}
+
+.show-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform var(--transition-slow), opacity var(--transition-base);
+    display: block;
+}
+
+/* ── Footer ── */
+.show-card__footer {
+    padding: var(--space-xs) var(--space-sm) var(--space-sm);
+}
+
+.show-card__title {
+    font-size: var(--font-xs);
+    font-weight: 600;
+    color: var(--netflix-light-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+}
+
+/* ── Overlay (on hover/tap) ── */
+.show-card__overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-md);
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.95) 0%,
+            rgba(0, 0, 0, 0.6) 50%,
+            rgba(0, 0, 0, 0.2) 100%);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: var(--space-sm);
+    pointer-events: none;
+}
+
+.show-card__overlay-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.show-card__overlay-title {
+    font-size: var(--font-xs);
+    font-weight: 700;
+    color: var(--netflix-white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.show-card__rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #f5c518;
+}
+
+.show-card__genres {
+    font-size: 10px;
+    color: var(--netflix-light-gray);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.show-card__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    flex-wrap: wrap;
+}
+
+.show-card__status {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 5px;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+}
+
+.show-card__status--running {
+    background: rgba(70, 211, 105, 0.2);
+    color: #46d369;
+    border: 1px solid rgba(70, 211, 105, 0.3);
+}
+
+.show-card__status--ended {
+    background: rgba(229, 9, 20, 0.2);
+    color: #e50914;
+    border: 1px solid rgba(229, 9, 20, 0.3);
+}
+
+.show-card__status--to-be-determined,
+.show-card__status--in-development {
+    background: rgba(255, 165, 0, 0.2);
+    color: #ffa500;
+    border: 1px solid rgba(255, 165, 0, 0.3);
+}
+
+.show-card__year {
+    font-size: 10px;
+    color: var(--netflix-light-gray);
+}
+
+.show-card__desc {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ── Action Buttons in Overlay ── */
+.show-card__actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.show-card__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.show-card__btn:active {
+    transform: scale(0.9);
+}
+
+.show-card__btn--play {
+    background: var(--netflix-white);
+    color: var(--netflix-black);
+}
+
+.show-card__btn--play:hover {
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.show-card__btn--add,
+.show-card__btn--like {
+    background: rgba(42, 42, 42, 0.8);
+    color: var(--netflix-white);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.show-card__btn--add:hover,
+.show-card__btn--like:hover {
+    border-color: var(--netflix-white);
+    background: rgba(60, 60, 60, 0.9);
+}
+
+/* ============================================================
+   Hover Behavior — Desktop
+   Only transform/overlay on non-touch (pointer: fine) devices
+   ============================================================ */
+@media (hover: hover) and (pointer: fine) {
+    .show-card:hover {
+        transform: scale(1.08);
+        z-index: var(--z-card);
+        transition: transform var(--transition-base), z-index 0s;
+    }
+
+    .show-card:hover .show-card__overlay {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .show-card:hover .show-card__img {
+        transform: scale(1.04);
+    }
+}
+
+/* ============================================================
+   Mobile Tap Behavior
+   Show overlay when .show-card--hovered class is added
+   ============================================================ */
+@media (hover: none) or (pointer: coarse) {
+    .show-card--hovered .show-card__overlay {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+/* ============================================================
+   Tablet (481px+)
+   ============================================================ */
+@media (min-width: 481px) {
+    .show-card__title {
+        font-size: var(--font-sm);
+    }
+
+    .show-card__overlay-title {
+        font-size: var(--font-sm);
+    }
+}
+
+/* ============================================================
+   Laptop (769px+)
+   ============================================================ */
+@media (min-width: 769px) {
+    .show-card__btn {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* ============================================================
+   Large — Trending Row Cards
+   ============================================================ */
+.show-card--large .show-card__img-wrapper {
+    /* 16:9-ish landscape for trending */
+    aspect-ratio: 16 / 10;
+}
